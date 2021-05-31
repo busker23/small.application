@@ -6,21 +6,23 @@
         </template>
         <b-card-text>{{ data.question }}</b-card-text>
         <slot></slot>
-        <!-- <b-button href="#" variant="primary" v-b-modal.modal-1>Посмотреть ответ</b-button>
-        <ResponseModal/> -->
         <template #footer>
-            <em>{{ data.created_at }}</em>
+            <em>Создан {{ getFormattedDate(data.created_at) }}</em>
         </template>
         </b-card>
     </div>
 </template>
 
 <script>
-// import ResponseModal from '@/components/ResponseModal';
 
 export default {
     name: 'Card',
     props: ['data'],
-    // components: {ResponseModal}
+    methods: {
+        getFormattedDate(date) {
+            let formattedDate = new Date(date);
+            return formattedDate.toLocaleString();
+        }
+    },
 }
 </script>

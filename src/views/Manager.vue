@@ -55,11 +55,7 @@ export default {
     },
     methods: {
         getAllRequests() {
-            this.$store.dispatch('getAllRequests', this.form).then(response => {
-                console.log(response)
-            }, error => {
-                console.log(error)
-            })
+            this.$store.dispatch('getAllRequests', this.form);
         },
         showAll() {
             this.activeNav = 'all';
@@ -70,22 +66,14 @@ export default {
             let params = {
                 'answered': 1
             }
-            this.$store.dispatch('getOptionalRequests', params).then(response => {
-                console.log(response)
-            }), error => {
-                console.log(error)
-            }
+            this.$store.dispatch('getOptionalRequests', params);
         },
         showNotAnswered() {
             this.activeNav = 'notanswered';
             let params = {
                 'answered': 0
             }
-            this.$store.dispatch('getOptionalRequests', params).then(response => {
-                console.log(response)
-            }), error => {
-                console.log(error)
-            }
+            this.$store.dispatch('getOptionalRequests', params);
         }
     },
     mounted() {

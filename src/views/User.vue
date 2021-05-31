@@ -40,12 +40,7 @@ export default {
     },
 
     mounted() {
-        this.$store.dispatch('getUserRequests', this.form).then(response => {
-            console.log(response);
-            // this.requests = response.data;
-        }, error => {
-            console.log(error)
-        })
+        this.$store.dispatch('getUserRequests', this.form);
     }
 }
 </script>

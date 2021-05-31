@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable type="dark" variant="dark" class="p-2">
-    <b-navbar-brand href="#">Small</b-navbar-brand>
+    <b-navbar-brand href="#">Home</b-navbar-brand>
     <div>
       <b-nav>
           <router-link class="nav-link active" v-if="!isAuth" to="/login">Вход</router-link>
@@ -19,7 +19,7 @@ export default {
   components: {},
   computed: {
     isAuth() {
-      return localStorage.getItem('auth') === 'true'
+      return this.$store.state.isAuthenticated;
     }
   },
   methods: {

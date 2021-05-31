@@ -2,6 +2,6 @@ import api from "./api";
 
 export default {
     getCookie() {
-        return api.get('/csrf-cookie');
+        return api.get('/sanctum/csrf-cookie');
     }
 }

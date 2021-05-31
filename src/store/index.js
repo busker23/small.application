@@ -7,8 +7,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isAuthenticated: false,
-    isAdmin: false,
+    isAuthenticated: localStorage.getItem('auth') === 'true',
+    isAdmin: localStorage.getItem('admin') === 'true',
     isRegistered: false,
     requests: {},
   },
@@ -18,8 +18,8 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    registered(state, status) {
-      state.isRegistered = status === 'success';
+    registered(state) {
+      state.isRegistered = localStorage.getItem('admin') === 'true';
     },
     auth(state) {
       state.isAuthenticated = localStorage.getItem('auth') === 'true';
@@ -31,7 +31,7 @@ export default new Vuex.Store({
       state.requests = requests;
     },
     addNewRequest(state, request) {
-      state.requests.push(request);
+      state.requests.unshift(request);
     },
     setAllRequests(state, requests) {
       state.requests = requests;
@@ -59,9 +59,14 @@ export default new Vuex.Store({
           context.commit('auth');
 
           if (response.data.is_admin) {
-            context.commit('isAdmin', true);
+            context.commit('isAdmin');
+            localStorage.setItem('admin', true);
             router.push({ path: '/manager' });
+            context.commit('isAdmin');
           } else {
+            if (localStorage.getItem('admin')) {
+              localStorage.removeItem('admin');
+            }
             router.push({ path: '/user' });
           }
           resolve(response);
@@ -75,7 +80,7 @@ export default new Vuex.Store({
         request.logout().then(response => {
           localStorage.removeItem('auth');
           context.commit('auth');
-          router.push({ path: '/home' });
+          router.push({ path: '/login' });
           resolve(response);
         }).catch(error => {
           reject(error);
@@ -109,6 +114,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         request.addNewUserRequest(data).then(response => {
           context.commit('addNewRequest', response.data);
+          context.commit('setLastAddedRequestDate', response.data.created_at);
           resolve(response);
         }).catch(error => {
           reject(error)
